@@ -24,7 +24,7 @@ npx snarkjs zkey export verificationkey build/Verifier.zkey build/Verifier_vkey.
 # Export the solidity verifier 
 npx snarkjs zkey export solidityverifier build/Verifier.zkey contracts/Verifier.sol
 # Replace the pragma solidity version
-sed -i -e 's/pragma solidity \^0.6.11/pragma solidity 0.8.24/g' contracts/Verifier.sol
+# sed -i -e 's/pragma solidity \^0.6.11/pragma solidity 0.8.24/g' contracts/Verifier.sol
 
 # Generate the verifier js files from the wasm file
 npx wasm2js build/Verifier_js/Verifier.wasm -o src/Verifier.js
