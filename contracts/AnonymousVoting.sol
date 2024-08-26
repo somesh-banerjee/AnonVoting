@@ -8,7 +8,7 @@ contract AnonymousVoting is ZKTree {
     address public owner;
     address[] public voters;
     uint public numCandidates;
-    mapping(uint256 => bool) uniqueHashes;
+    mapping(address => bool) voterCommitted;
     mapping(uint => uint) public votes;
 
     constructor(
@@ -32,20 +32,14 @@ contract AnonymousVoting is ZKTree {
                 inside = true;
                 break;
             }
-        require(inside, "sender has to be registered as a voter");
+        require(inside, "Sender has to be registered as a voter");
         _;
     }
 
-    function registerCommitment(
-        uint256 _uniqueHash,
-        uint256 _commitment
-    ) external onlyVoters {
-        require(
-            !uniqueHashes[_uniqueHash],
-            "This unique hash is already used!"
-        );
+    function registerCommitment(uint256 _commitment) external onlyVoters {
+        require(!voterCommitted[msg.sender], "Voter has already committed!");
         _commit(bytes32(_commitment));
-        uniqueHashes[_uniqueHash] = true;
+        voterCommitted[msg.sender] = true;
     }
 
     function vote(
